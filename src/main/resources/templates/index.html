@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="bg-[#171717] flex justify-center">
+<main class="flex flex-col w-[800px]">
+    <nav th:replace="navbar"></nav>
+    <img th:src="@{/images/banner.svg}" alt="Banner" class="object-fill w-full">
+    <div>
+        <h2 class="text-white text-xl">Nuevos lanzamientos</h2>
+        <div class="grid grid-cols-4 grid-2 gap-4">
+            <a th:each="book : ${books}" th:href="@{/book/{title}(title=${book.getTitle()})}" class="rounded-lg text-white">
+                <div class="flex flex-col">
+                    <div class="relative w-[180px] h-[260px]">
+                        <img th:src="@{'/photo/' + ${book.urlBookImage}}" alt="Book Image" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="flex flex-row absolute bottom-0 left-0 bg-black py-[2px] px-[4px]">
+                            <img th:if="${book.getRatingAverage() % 1 == 0}" th:src="@{/estrella.svg}" width="12" height="12" alt="Estrella completa">
+                            <img th:if="${book.getRatingAverage() % 1 != 0}" th:src="@{/estrella-afilada-medio-trazo.svg}" width="12" height="12" alt="Media estrella">
+                            <p th:text="${book.getRatingAverage()}" class="ml-2"></p>
+                        </div>
+                    </div>
+                    <div class="text-left space-y-2">
+                        <h4 th:text="${book.getTitle()}" class="text-base font-bold"></h4>
+                        <p th:text="${book.getAuthor()}" class="text-xs"></p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="bg-[#171717] flex justify-center">
+<main class="flex flex-col w-[800px]">
+    <nav th:replace="navbar"></nav>
+    <main th:if="${bookDetails != null}" class="flex flex-col space-y-8">
+        <div class="flex flex-row items-end">
+            <img th:src="@{'/photo/' + ${bookDetails.urlBookImage}}" alt="Book Image" class="object-cover w-[180px] h-[260px] mr-8">
+            <div class="flex flex-col space-y-4">
+                <div>
+                    <h2 th:text="${bookDetails.getTitle()}" class="text-2xl font-bold text-white"></h2>
+                    <ul class="list-none">
+                        <li th:each="gender : ${bookDetails.getBookGenders()}" th:text="${gender.getName()}" class="text-white"></li>
+                    </ul>
+                </div>
+                <div class="flex flex-row space-x-4">
+                    <div class="flex items-center space-x-2">
+                <span>
+                    <img th:if="${bookDetails.getRatingAverage() % 1 == 0}" th:src="@{/estrella.svg}" width="16" height="16" alt="Estrella completa">
+                    <img th:if="${bookDetails.getRatingAverage() % 1 != 0}" th:src="@{/estrella-afilada-medio-trazo.svg}" width="16" height="16" alt="Media estrella">
+                </span>
+                        <p th:text="${bookDetails.getRatingAverage()}" class="text-lg text-white"></p>
+                    </div>
+                    <div>
+                <span class="flex items-center space-x-2 text-white">
+                    <img th:src="@{/comentario-alt-medio.svg}" width="16" height="16" alt="comentarios">
+                    <p th:text="${bookDetails.getNumberOfComments()}" class="text-lg"> comentarios</p>
+                </span>
+                    </div>
+                </div>
+                <div class="flex flex-row space-x-6 items-center">
+                    <div class="flex flex-row space-x-12">
+                        <div class="text-white">
+                            <p>Autor</p>
+                            <p th:text="${bookDetails.getAuthor()}" class="font-bold"></p>
+                        </div>
+                        <div class="text-white">
+                            <p>Editorial</p>
+                            <p th:text="${bookDetails.getPublisher()}" class="font-bold"></p>
+                        </div>
+                        <div class="text-white">
+                            <p>Año</p>
+                            <p th:text="${bookDetails.getReleaseYear()}" class="font-bold"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-row items-center space-x-4">
+                    <a th:href="@{'/files/' + ${bookDetails.urlBookPdf}}" class="bg-violet-500 px-4 py-2 text-white font-bold rounded hover:bg-violet-400 h-full" target="_blank">Leer libro</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-white">
+            <h2 class="font-bold text-xl">Sinopsis</h2>
+            <p th:text="${bookDetails.getSynopsis()}"></p>
+        </div>
+        <div class="text-white space-y-12">
+            <h2 class="font-bold text-xl">Comentarios</h2>
+            <div class="flex flex-row">
+                <div th:if="${session.user != null}" class="flex flex-row space-x-4 items-center">
+                    <img th:src="@{/images/profile.png}" width="48" height="48">
+                    <div>
+                        <form action="/comment" method="post" class="flex flex-row space-x-4">
+                            <input name="userId" th:value="${session.user.getId()}" hidden>
+                            <input name="bookId" th:value="${bookDetails.getId()}" hidden>
+                            <input type="text" placeholder="Agrega un comentario..."
+                                   class="w-full p-2 rounded-lg bg-transparent border-gray-300"
+                                   style="border: 1px solid #C0C0C0;"
+                                   name="comment">
+                            <button class="bg-violet-500 px-4 py-2 font-bold rounded hover:bg-violet-400" type="submit">Comentar</button>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${session.user == null}" class="flex flex-row space-x-4 items-center">
+                    <p class="font-bold text-white text-lg text-balance">Es necesario iniciar sesión para dejar un comentario</p>
+                    <a href="/login" class="bg-[#222222] text-white bg-violet-500 px-4 py-2 font-bold rounded hover:bg-violet-400">Ingresar</a>
+                </div>
+            </div>
+            <div th:if="${!commentBooks.isEmpty()}" class="flex flex-col space-y-8">
+                <div th:each="commentBook : ${commentBooks}" class="flex flex-col space-y-4">
+                    <div class="flex flex-col space-x-2">
+                        <div class="flex flex-row justify-between">
+                            <div class="flex flex-row space-x-2">
+                                <img th:src="@{/images/profile.png}" width="48" height="48">
+                                <div>
+                                    <h4 th:text="${commentBook.getUser().getUsername()}"></h4>
+                                    <p th:text="${commentBook.formattedCreatedAt}"></p>
+                                </div>
+                            </div>
+                            <div class="flex flex-row space-x-6 items-center">
+                            <span class="flex flex-row space-x-2">
+                                <img th:src="@{/like.svg}" height="16" width="16">
+                                <p th:text="${commentBook.getLikeCount()}"></p>
+                            </span>
+                                <span class="flex flex-row space-x-2">
+                                <img th:src="@{/dislike.svg}" height="16" width="16">
+                                <p th:text="${commentBook.getDislikeCount()}"></p>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p th:text="${commentBook.getComment()}"></p>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${commentBooks.isEmpty()}">
+                <p>Aún no tiene ningún comentario, se el primero.</p>
+            </div>
+        </div>
+    </main>
+</main>
+</body>
+
+</html>

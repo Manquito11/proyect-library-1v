@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+<body class="flex flex-col bg-[#252424] justify-center items-center min-h-screen">
+    <main class="flex flex-col">
+        <div th:if="${notification == null}">
+            <span th:text="${notification}"></span>
+        </div>
+
+        <div class="flex flex-col p-6 bg-[#171717] rounded-lg border-black border-[1px] text-white">
+            <header>
+                <h1 class="text-3xl font-black">Bienvenido a Lectura360</h1>
+            </header>
+
+            <section class="mt-4">
+                <p class="text-lg text-slate-300">¡Descubre nuevos libros y vive grandes aventuras!</p>
+            </section>
+
+            <section class="mb-2">
+                <form action="/login" method="post"
+                      class="flex flex-col justify-center mt-7 ">
+                    <input type="text" placeholder="Nombre de usuario o correo electrónico"
+                           class="w-full p-4 my-2 rounded-lg bg-transparent border-gray-300"
+                           style="border: 1px solid #C0C0C0;"
+                           name="usernameOrEmail">
+
+                    <input type="password" placeholder="Contraseña"
+                           class="w-full p-4 my-2 rounded-lg bg-transparent mt-5"
+                           style="border: 1px solid #C0C0C0;"
+                           name="password">
+
+                    <a href="#" class="text-violet-400 text-right underline">¿Olvidaste tu contraseña?</a>
+                    <button class="p-3 rounded-lg mt-12 mb-2"
+                            style="background-image: linear-gradient(-225deg, #7573DD 74%, #7D7CB6 100%);" type="submit">Iniciar Sesión</button>
+                    <a th:href="@{/}" class="bg-[#222222] text-white px-4 py-2 font-bold rounded hover:bg-zinc-700 text-center">Cancelar</a>
+                </form>
+            </section>
+            <p th:if="${error != null}" th:text="${error}" class="p-2 text-center font-bold"
+                style="color: #ff5a83"></p>
+        </div>
+    </main>
+</body>
+</html>

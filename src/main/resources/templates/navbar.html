@@ -1,0 +1,25 @@
+<nav class="flex flex-row py-2 justify-between">
+    <div class="flex flex-row items-center space-x-4 py-2">
+        <img th:src="@{/logo.png}" alt="Logo">
+        <a th:href="@{/}" class="text-white">Todos los libros</a>
+    </div>
+    <div class="flex flex-row items-center space-x-4">
+        <form action="lectura360/book/" method="post" class="inline-flex items-center border-[#222222] bg-[#222222] rounded px-4 py-2 space-x-2 hover:border hover:border-gray-500 focus-within:border-gray-500 focus-within:ring focus-within:ring-gray-500">
+            <img th:src="@{/search.svg}" alt="Buscar">
+            <input type="text" placeholder="Buscar" class="bg-[#222222] text-white rounded w-24 focus:outline-none">
+        </form>
+
+        <div th:if="${session.user == null}" class="flex flex-row items-center space-x-4">
+            <a href="/login" class="bg-[#222222] text-white px-4 py-2 font-bold rounded hover:bg-zinc-700">Ingresar</a>
+            <a href="/signup" class="text-white bg-violet-500 px-4 py-2 font-bold rounded hover:bg-violet-400">Registrarse</a>
+        </div>
+        <div th:if="${session.user != null}" class="flex flex-row items-center space-x-4">
+            <div class="text-white">
+                <a href="">U</a>
+            </div>
+            <div class="text-white">
+                <a href="">C</a>
+            </div>
+        </div>
+    </div>
+</nav>
